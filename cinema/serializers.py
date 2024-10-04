@@ -13,9 +13,18 @@ class MovieSerializer(serializers.Serializer):
         return Movie.objects.create(**validated_data)
 
     def update(self, instance: Movie, validated_data: dict) -> Movie:
-        for field in ("title", "description", "duration"):
-            if field in validated_data:
-                setattr(instance, field, validated_data[field])
+        instance.title = validated_data.get(
+            "title",
+            instance.title
+        )
+        instance.description = validated_data.get(
+            "description",
+            instance.description
+        )
+        instance.duration = validated_data.get(
+            "duration",
+            instance.duration
+        )
 
         instance.save()
         return instance
